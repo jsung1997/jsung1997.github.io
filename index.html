@@ -1196,31 +1196,7 @@
       }
 
       function drawGrid(time) {
-        if (mode !== 'hero') return;
-
-        ctx.save();
-        ctx.translate(w * .5, h * .62);
-        ctx.rotate(-0.18);
-        ctx.strokeStyle = mode === 'hero' ? 'rgba(255,255,255,.10)' : 'rgba(255,255,255,.12)';
-        ctx.lineWidth = 1;
-
-        for (let i = -18; i <= 18; i++) {
-          const offset = i * 42 + (time * 18) % 42;
-          ctx.beginPath();
-          ctx.moveTo(-w, offset);
-          ctx.lineTo(w, offset * .45);
-          ctx.stroke();
-        }
-
-        for (let i = -18; i <= 18; i++) {
-          const x = i * 54;
-          ctx.beginPath();
-          ctx.moveTo(x, -h);
-          ctx.lineTo(x * .25, h);
-          ctx.stroke();
-        }
-
-        ctx.restore();
+        return;
       }
 
       function draw(time) {
