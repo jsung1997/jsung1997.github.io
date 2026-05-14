@@ -1196,6 +1196,8 @@
       }
 
       function drawGrid(time) {
+        if (mode !== 'hero') return;
+
         ctx.save();
         ctx.translate(w * .5, h * .62);
         ctx.rotate(-0.18);
