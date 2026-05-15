@@ -17,6 +17,8 @@
       --blue: #1c64f2;
       --ease: cubic-bezier(.19, 1, .22, 1);
       --page-scale: 1.25;
+      --page-scale-inverse: .8;
+      --visual-page: calc(100svh * var(--page-scale-inverse));
     }
 
     * {
@@ -188,7 +190,7 @@
     }
 
     .hero {
-      min-height: 100vh;
+      min-height: var(--visual-page);
       position: relative;
       background: #000;
       color: #efefef;
@@ -341,7 +343,8 @@
     }
 
     .section {
-      padding: 150px 48px;
+      min-height: var(--visual-page);
+      padding: clamp(56px, calc(7svh * var(--page-scale-inverse)), 110px) 48px;
       scroll-margin-top: 76px;
     }
 
@@ -351,7 +354,7 @@
       display: grid;
       grid-template-columns: .85fr 1.15fr;
       gap: 80px;
-      align-items: start;
+      align-items: center;
     }
 
     .section-label {
@@ -360,8 +363,25 @@
       letter-spacing: .02em;
     }
 
+    .about-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 28px;
+    }
+
+    .about-code-window {
+      width: min(200%, 760px);
+      max-width: none;
+      max-height: calc(var(--visual-page) - 120px);
+      object-fit: contain;
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, #000 58%, rgba(0,0,0,.75) 72%, transparent 100%);
+      mask-image: radial-gradient(ellipse at center, #000 0%, #000 58%, rgba(0,0,0,.75) 72%, transparent 100%);
+      transform: translateX(-28px);
+    }
+
     .big-copy {
-      font-size: clamp(36px, 5.8vw, 96px);
+      font-size: clamp(36px, 5.8vw, 50px);
       line-height: .98;
       letter-spacing: -0.075em;
       font-weight: 720;
@@ -369,8 +389,8 @@
 
     .body-copy {
       margin-top: 36px;
-      color: #4b4f56;
-      font-size: 19px;
+      color: #d6d6d6;
+      font-size: 30px;
       line-height: 1.65;
       max-width: 840px;
       letter-spacing: -0.025em;
@@ -378,13 +398,18 @@
 
     .portfolio {
       background: #111111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: clamp(36px, calc(4.5svh * var(--page-scale-inverse)), 70px);
+      padding-bottom: clamp(30px, calc(3.5svh * var(--page-scale-inverse)), 56px);
     }
 
     .section-head {
       display: grid;
       grid-template-columns: .8fr 1.2fr;
       gap: 50px;
-      margin-bottom: 72px;
+      margin-bottom: clamp(20px, calc(3svh * var(--page-scale-inverse)), 34px);
       align-items: end;
     }
 
@@ -406,9 +431,10 @@
 
     .project-carousel {
       position: relative;
-      max-width: 1280px;
+      width: min(100%, 1500px);
+      max-width: none;
       margin: 0 auto;
-      --carousel-height: 730px;
+      --carousel-height: clamp(500px, calc(66svh * var(--page-scale-inverse)), 650px);
     }
 
     .project-carousel::before,
@@ -416,7 +442,7 @@
       content: "";
       position: absolute;
       top: 0;
-      width: 18%;
+      width: 7%;
       height: var(--carousel-height);
       z-index: 5;
       pointer-events: none;
@@ -424,28 +450,28 @@
 
     .project-carousel::before {
       left: 0;
-      background: linear-gradient(to right, #111111 0%, rgba(17,17,17,.86) 34%, rgba(17,17,17,0) 100%);
+      background: linear-gradient(to right, #111111 0%, rgba(17,17,17,.72) 42%, rgba(17,17,17,0) 100%);
     }
 
     .project-carousel::after {
       right: 0;
-      background: linear-gradient(to left, #111111 0%, rgba(17,17,17,.86) 34%, rgba(17,17,17,0) 100%);
+      background: linear-gradient(to left, #111111 0%, rgba(17,17,17,.72) 42%, rgba(17,17,17,0) 100%);
     }
 
     .cards {
       position: relative;
       height: var(--carousel-height);
       overflow: hidden;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.25) 5%, #000 15%, #000 85%, rgba(0,0,0,.25) 95%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.25) 5%, #000 15%, #000 85%, rgba(0,0,0,.25) 95%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.45) 2%, #000 6%, #000 94%, rgba(0,0,0,.45) 98%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.45) 2%, #000 6%, #000 94%, rgba(0,0,0,.45) 98%, transparent 100%);
     }
 
     .card {
       position: absolute;
       top: 18px;
       left: 50%;
-      width: clamp(420px, 38vw, 540px);
-      height: 690px;
+      width: clamp(360px, 34vw, 500px);
+      height: calc(var(--carousel-height) - 26px);
       border-radius: 30px;
       overflow: hidden;
       background: #111;
@@ -633,7 +659,9 @@
     .tech {
       background: #1c1c1c;
       color: #efefef;
-      padding-bottom: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .tech .section-head p {
@@ -648,15 +676,9 @@
       display: grid;
       grid-template-columns: 160px 1fr 1fr;
       gap: 40px;
-      padding: 44px 0;
+      padding: clamp(20px, calc(3.5svh * var(--page-scale-inverse)), 34px) 0;
       border-bottom: 1px solid rgba(255,255,255,.16);
       cursor: default;
-      transition: padding .55s var(--ease), background .55s var(--ease);
-    }
-
-    .tech-item:hover {
-      padding-left: 24px;
-      background: rgba(255,255,255,.045);
     }
 
     .tech-num {
@@ -681,10 +703,14 @@
     .contact {
       background: #050505;
       color: #efefef;
-      min-height: 80vh;
+      min-height: var(--visual-page);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+    }
+
+    .contact-head {
+      margin-bottom: clamp(44px, calc(8svh * var(--page-scale-inverse)), 86px);
     }
 
     .contact h2 {
@@ -696,9 +722,11 @@
 
     .contact-bottom {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
-      margin-top: 80px;
+      margin-top: 0;
+      align-self: center;
+      width: 100%;
     }
 
     .contact-card {
@@ -846,13 +874,19 @@
         justify-self: start;
       }
 
+      .about-code-window {
+        width: min(100%, 760px);
+        max-height: 420px;
+        transform: none;
+      }
+
       .cards {
         grid-template-columns: 1fr;
       }
 
       .project-carousel {
         max-width: 100%;
-        --carousel-height: 610px;
+        --carousel-height: clamp(430px, calc(64svh * var(--page-scale-inverse)), 560px);
       }
 
       .cards {
@@ -860,8 +894,8 @@
       }
 
       .card {
-        width: min(82vw, 440px);
-        height: 570px;
+        width: min(82vw, 410px);
+        height: calc(var(--carousel-height) - 28px);
       }
 
       .card.is-prev {
@@ -928,12 +962,12 @@
       }
 
       .project-carousel {
-        --carousel-height: 535px;
+        --carousel-height: clamp(390px, calc(64svh * var(--page-scale-inverse)), 500px);
       }
 
       .card {
-        width: min(86vw, 370px);
-        height: 500px;
+        width: min(86vw, 350px);
+        height: calc(var(--carousel-height) - 26px);
         padding: 30px;
       }
 
@@ -1008,7 +1042,7 @@
     <div class="nav-links" id="site-navigation">
       <a href="#About">About</a>
       <a href="#portfolio">Projects</a>
-      <a href="#technology">Technology</a>
+      <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
       <span class="language">English</span>
     </div>
@@ -1038,7 +1072,7 @@
           </div>
         </div>
 
-        <p>I build practical AI systems across LLMs, RAG, software defect prediction, and data-driven engineering workflows.</p>
+        <p>Building practical AI-powered developer tools, software defect prediction, RAG systems, and data-driven engineering workflows.</p>
 
         <a class="arrow-button" href="#About"><span>Learn More ↓</span></a>
       </div>
@@ -1046,16 +1080,21 @@
   </header>
 
   <section class="section intro" id="About">
-    <div class="section-label reveal">About</div>
+    <div class="about-visual reveal">
+      <div class="section-label">About</div>
+      <img class="about-code-window" src="assets/CodeWindows.png" alt="Code editor window preview" loading="lazy" decoding="async" />
+    </div>
 
     <div class="reveal">
-      <div class="big-copy">Built for real engineering workflows, not just controlled demos.</div>
+      <div class="big-copy">Building AI systems that turn complex engineering data into actionable insight.</div>
 
       <p class="body-copy">
-        I am an early-career AI and software engineer focused on building practical AI systems that connect machine learning,
-        software engineering, and real-world problem solving. My work centers around large language models, retrieval-augmented
-        generation, software defect prediction, model optimization, data analysis, and system-level AI experimentation.
-        I enjoy understanding how AI systems behave in practice, where they fail, and how they can be improved over time.
+          AI and software engineer focused on practical AI systems for real engineering workflows.
+          Core interests include LLM applications, RAG systems, software defect prediction, model evaluation,
+          and Python-based AI/ML pipelines.
+      <br><br>
+          Interested in AI-powered developer tools that help teams understand code behavior,
+          detect issues earlier, and turn technical data into actionable insights.
       </p>
     </div>
   </section>
@@ -1142,40 +1181,37 @@
     </div>
   </section>
 
-  <section class="section tech" id="technology">
+  <section class="section tech" id="skills">
     <div class="section-head reveal">
-      <h2>Technology</h2>
-      <p>
-        My technical interests are centered on building useful AI systems that are reliable, explainable,
-        adaptable, and practical enough for real-world engineering use.
-      </p>
+      <h2>Skills</h2>
+     
     </div>
 
     <div class="tech-list">
       <div class="tech-item reveal">
         <div class="tech-num">01</div>
-        <div class="tech-title">LLM-based software defect prediction</div>
+        <div class="tech-title">LLM Application Development</div>
         <div class="tech-desc">
-          Exploring how large language models can support software quality by identifying potentially defective code,
-          analyzing recurring error patterns, and improving prediction workflows.
+          Building practical applications with large language models, including prompt workflows, reasoning-based systems, 
+          and AI tools that support real software engineering tasks.
         </div>
       </div>
 
       <div class="tech-item reveal">
         <div class="tech-num">02</div>
-        <div class="tech-title">Retrieval-augmented generation</div>
+        <div class="tech-title">Retrieval-Augmented Generation</div>
         <div class="tech-desc">
-          Building systems that combine document retrieval, embeddings, vector search, and language models to improve
-          factual grounding and reduce hallucination.
+          Designing RAG pipelines that connect language models with external knowledge sources, helping improve response accuracy, 
+          context awareness, and usefulness in real-world applications.
         </div>
       </div>
 
       <div class="tech-item reveal">
         <div class="tech-num">03</div>
-        <div class="tech-title">Model optimization and adaptation</div>
+        <div class="tech-title">Defect Prediction Visualization</div>
         <div class="tech-desc">
-          Studying techniques such as LoRA, QLoRA, quantization, pruning, and knowledge distillation to make AI systems
-          more efficient and easier to adapt.
+          Applying machine learning and LLM-based methods to analyze code behavior, detect potential defects, 
+          and support more reliable software development workflows.
         </div>
       </div>
 
@@ -1187,11 +1223,20 @@
           practical model testing to understand system behavior.
         </div>
       </div>
+
+      <div class="tech-item reveal">
+        <div class="tech-num">05</div>
+        <div class="tech-title">AI/ML Data Pipelines</div>
+        <div class="tech-desc">
+          Working with data processing, model evaluation, feature analysis, and machine learning 
+          workflows to turn raw technical data into meaningful insights.
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section contact" id="contact">
-    <div class="reveal">
+    <div class="contact-head reveal">
       <div class="section-label">Contact</div>
       <h2>Let's build.</h2>
     </div>
@@ -1223,6 +1268,15 @@
         </p>
         <div>linkedin.com/in/jaysung97 →</div>
       </a>
+
+      <a href="assets/CV_SUNG_KR.pdf" class="contact-card" target="_blank" rel="noopener noreferrer">
+        <h3>Resume</h3>
+        <p>
+          View or download my current resume for AI/ML engineering,
+          software engineering, and project collaboration opportunities.
+        </p>
+        <div>CV_SUNG_KR.pdf →</div>
+      </a>
     </div>
   </section>
 
@@ -1235,7 +1289,7 @@
     <div>
       About<br>
       Projects<br>
-      Technology<br>
+      Skills<br>
       Contact
     </div>
 
@@ -1378,10 +1432,10 @@
       }
 
       function getSpacing() {
-        if (window.matchMedia('(max-width: 560px)').matches) return 285;
-        if (window.matchMedia('(max-width: 980px)').matches) return 395;
+        if (window.matchMedia('(max-width: 560px)').matches) return 260;
+        if (window.matchMedia('(max-width: 980px)').matches) return 360;
 
-        return 560;
+        return 500;
       }
 
       function getNearestIndex() {
