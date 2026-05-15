@@ -363,11 +363,19 @@
       letter-spacing: .02em;
     }
 
+    .about-title {
+      color: #efefef;
+      font-size: clamp(48px, 7vw, 120px);
+      line-height: .9;
+      letter-spacing: -0.08em;
+      font-weight: 760;
+    }
+
     .about-visual {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 28px;
+      gap: 36px;
     }
 
     .about-code-window {
@@ -1081,7 +1089,7 @@
 
   <section class="section intro" id="About">
     <div class="about-visual reveal">
-      <div class="section-label">About</div>
+      <h2 class="about-title">About</h2>
       <img class="about-code-window" src="assets/CodeWindows.png" alt="Code editor window preview" loading="lazy" decoding="async" />
     </div>
 
