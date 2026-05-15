@@ -401,15 +401,26 @@
       letter-spacing: -0.02em;
     }
 
+    .project-carousel {
+      position: relative;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
     .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      position: relative;
+      height: 560px;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
     }
 
     .card {
-      position: relative;
-      height: 560px;
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      width: clamp(300px, 30vw, 380px);
+      height: 520px;
       border-radius: 30px;
       overflow: hidden;
       background: #111;
@@ -420,12 +431,74 @@
       justify-content: space-between;
       isolation: isolate;
       transform-origin: center;
-      transform: translateY(0);
-      transition: transform .8s var(--ease), border-radius .8s var(--ease);
+      --card-x: 0px;
+      --card-y: 0px;
+      --card-scale: .82;
+      --hover-scale: 0;
+      --card-opacity: 0;
+      --card-saturation: .8;
+      --card-brightness: .72;
+      opacity: var(--card-opacity);
+      pointer-events: none;
+      filter: saturate(var(--card-saturation)) brightness(var(--card-brightness));
+      box-shadow: 0 32px 90px rgba(0,0,0,.28);
+      transform: translateX(calc(-50% + var(--card-x))) translateY(var(--card-y)) scale(calc(var(--card-scale) + var(--hover-scale)));
+      transition: border-radius .9s var(--ease);
+      will-change: transform, opacity, filter;
     }
 
-    .card:hover {
-      transform: translateY(-12px) scale(1.018);
+    .card.is-active {
+      z-index: 3;
+      --card-opacity: 1;
+      --card-scale: 1;
+      --card-saturation: 1;
+      --card-brightness: 1;
+      pointer-events: auto;
+    }
+
+    .card.is-prev {
+      z-index: 2;
+      --card-x: -390px;
+      --card-opacity: .68;
+      --card-scale: .92;
+      --card-saturation: .88;
+      --card-brightness: .82;
+      pointer-events: auto;
+    }
+
+    .card.is-next {
+      z-index: 2;
+      --card-x: 390px;
+      --card-opacity: .68;
+      --card-scale: .92;
+      --card-saturation: .88;
+      --card-brightness: .82;
+      pointer-events: auto;
+    }
+
+    .card.is-far-prev {
+      z-index: 1;
+      --card-x: -720px;
+      --card-opacity: .26;
+      --card-scale: .78;
+      --card-saturation: .72;
+      --card-brightness: .64;
+      pointer-events: auto;
+    }
+
+    .card.is-far-next {
+      z-index: 1;
+      --card-x: 720px;
+      --card-opacity: .26;
+      --card-scale: .78;
+      --card-saturation: .72;
+      --card-brightness: .64;
+      pointer-events: auto;
+    }
+
+    .card.is-active:hover {
+      --card-y: -12px;
+      --hover-scale: .018;
       border-radius: 20px;
     }
 
@@ -467,6 +540,63 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,.24);
       font-size: 13px;
+    }
+
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .carousel-button {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.26);
+      background: rgba(255,255,255,.08);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: background .25s ease, transform .25s ease;
+    }
+
+    .carousel-button:hover {
+      background: rgba(255,255,255,.18);
+      transform: translateY(-2px);
+    }
+
+    .carousel-button span {
+      font-size: 28px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .carousel-dot {
+      width: 9px;
+      height: 9px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.36);
+      cursor: pointer;
+      padding: 0;
+      transition: width .25s ease, background .25s ease;
+    }
+
+    .carousel-dot.is-active {
+      width: 28px;
+      border-radius: 999px;
+      background: white;
     }
 
     .tech {
@@ -737,8 +867,41 @@
         grid-template-columns: 1fr;
       }
 
+      .project-carousel {
+        max-width: 100%;
+      }
+
+      .cards {
+        height: 500px;
+      }
+
       .card {
+        width: min(72vw, 340px);
         height: 460px;
+      }
+
+      .card.is-prev {
+        --card-x: -315px;
+        --card-opacity: .5;
+        --card-scale: .86;
+      }
+
+      .card.is-next {
+        --card-x: 315px;
+        --card-opacity: .5;
+        --card-scale: .86;
+      }
+
+      .card.is-far-prev {
+        --card-x: -555px;
+        --card-opacity: .18;
+        --card-scale: .72;
+      }
+
+      .card.is-far-next {
+        --card-x: 555px;
+        --card-opacity: .18;
+        --card-scale: .72;
       }
 
       .tech-item {
@@ -774,6 +937,41 @@
       .arrow-button {
         width: 132px;
         height: 132px;
+      }
+
+      .cards {
+        height: 465px;
+      }
+
+      .card {
+        width: min(78vw, 300px);
+        height: 430px;
+      }
+
+      .card.is-prev {
+        --card-x: -250px;
+        --card-opacity: .28;
+        --card-scale: .8;
+      }
+
+      .card.is-next {
+        --card-x: 250px;
+        --card-opacity: .28;
+        --card-scale: .8;
+      }
+
+      .card.is-far-prev,
+      .card.is-far-next {
+        --card-opacity: 0;
+        pointer-events: none;
+      }
+
+      .card h3 {
+        font-size: 38px;
+      }
+
+      .carousel-controls {
+        gap: 14px;
       }
     }
 
@@ -875,36 +1073,76 @@
       </p>
     </div>
 
-    <div class="cards">
-      <a class="card reveal" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View Defect Prediction project on GitHub">
-        <canvas class="card-canvas" aria-hidden="true"></canvas>
-        <div class="card-kicker">Software Engineering AI</div>
+    <div class="project-carousel reveal" aria-label="Featured projects carousel">
+      <div class="cards" data-project-carousel>
+        <a class="card is-active" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View Defect Prediction project on GitHub">
+          <canvas class="card-canvas" aria-hidden="true"></canvas>
+          <div class="card-kicker">Software Engineering AI</div>
 
-        <div>
-          <h3>Defect<br>Prediction</h3>
-          <span class="card-link">View Project</span>
+          <div>
+            <h3>Defect<br>Prediction</h3>
+            <span class="card-link">View Project</span>
+          </div>
+        </a>
+
+        <a class="card is-next" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View RAG Pipeline project on GitHub">
+          <canvas class="card-canvas" aria-hidden="true"></canvas>
+          <div class="card-kicker">LLM Systems</div>
+
+          <div>
+            <h3>RAG<br>Pipeline</h3>
+            <span class="card-link">View Project</span>
+          </div>
+        </a>
+
+        <a class="card is-far-next" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View LoRA Optimization project on GitHub">
+          <canvas class="card-canvas" aria-hidden="true"></canvas>
+          <div class="card-kicker">Model Adaptation</div>
+
+          <div>
+            <h3>LoRA<br>Optimization</h3>
+            <span class="card-link">View Project</span>
+          </div>
+        </a>
+
+        <a class="card is-far-prev" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View AI Evaluation project on GitHub">
+          <canvas class="card-canvas" aria-hidden="true"></canvas>
+          <div class="card-kicker">Evaluation Systems</div>
+
+          <div>
+            <h3>AI<br>Evaluation</h3>
+            <span class="card-link">View Project</span>
+          </div>
+        </a>
+
+        <a class="card is-prev" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View Agentic Coding project on GitHub">
+          <canvas class="card-canvas" aria-hidden="true"></canvas>
+          <div class="card-kicker">AI Agents</div>
+
+          <div>
+            <h3>Agentic<br>Coding</h3>
+            <span class="card-link">View Project</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="carousel-controls" aria-label="Project carousel controls">
+        <button class="carousel-button" type="button" data-carousel-prev aria-label="Previous project">
+          <span aria-hidden="true">‹</span>
+        </button>
+
+        <div class="carousel-dots" role="tablist" aria-label="Choose featured project">
+          <button class="carousel-dot is-active" type="button" data-carousel-dot aria-label="Show Defect Prediction project" aria-current="true"></button>
+          <button class="carousel-dot" type="button" data-carousel-dot aria-label="Show RAG Pipeline project" aria-current="false"></button>
+          <button class="carousel-dot" type="button" data-carousel-dot aria-label="Show LoRA Optimization project" aria-current="false"></button>
+          <button class="carousel-dot" type="button" data-carousel-dot aria-label="Show AI Evaluation project" aria-current="false"></button>
+          <button class="carousel-dot" type="button" data-carousel-dot aria-label="Show Agentic Coding project" aria-current="false"></button>
         </div>
-      </a>
 
-      <a class="card reveal" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View RAG Pipeline project on GitHub">
-        <canvas class="card-canvas" aria-hidden="true"></canvas>
-        <div class="card-kicker">LLM Systems</div>
-
-        <div>
-          <h3>RAG<br>Pipeline</h3>
-          <span class="card-link">View Project</span>
-        </div>
-      </a>
-
-      <a class="card reveal" href="https://github.com/jsung1997" target="_blank" rel="noopener noreferrer" aria-label="View LoRA Optimization project on GitHub">
-        <canvas class="card-canvas" aria-hidden="true"></canvas>
-        <div class="card-kicker">Model Adaptation</div>
-
-        <div>
-          <h3>LoRA<br>Optimization</h3>
-          <span class="card-link">View Project</span>
-        </div>
-      </a>
+        <button class="carousel-button" type="button" data-carousel-next aria-label="Next project">
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -1138,6 +1376,169 @@
         history.pushState(null, '', hash);
       });
     });
+
+    function initProjectCarousel() {
+      const carousel = document.querySelector('[data-project-carousel]');
+      if (!carousel) return;
+
+      const frame = carousel.closest('.project-carousel') || carousel;
+      const cards = Array.from(carousel.querySelectorAll('.card'));
+      const dots = Array.from(frame.querySelectorAll('[data-carousel-dot]'));
+      const prevButton = frame.querySelector('[data-carousel-prev]');
+      const nextButton = frame.querySelector('[data-carousel-next]');
+      const glideSpeed = .08;
+      let activeIndex = 0;
+      let position = 0;
+      let targetPosition = null;
+      let lastTime;
+
+      function wrapIndex(index) {
+        return (index + cards.length) % cards.length;
+      }
+
+      function circularOffset(index, currentPosition) {
+        const halfLength = cards.length / 2;
+        return ((((index - currentPosition) + halfLength) % cards.length) + cards.length) % cards.length - halfLength;
+      }
+
+      function getSpacing() {
+        if (window.matchMedia('(max-width: 560px)').matches) return 250;
+        if (window.matchMedia('(max-width: 980px)').matches) return 315;
+
+        return 390;
+      }
+
+      function getNearestIndex() {
+        return wrapIndex(Math.round(position));
+      }
+
+      function updateDots(nextActiveIndex) {
+        dots.forEach((dot, index) => {
+          const isActive = index === nextActiveIndex;
+          dot.classList.toggle('is-active', isActive);
+          dot.setAttribute('aria-current', String(isActive));
+        });
+      }
+
+      function renderCards() {
+        const spacing = getSpacing();
+        activeIndex = getNearestIndex();
+        updateDots(activeIndex);
+
+        cards.forEach((card, index) => {
+          const offset = circularOffset(index, position);
+          const distance = Math.abs(offset);
+          const visibleDistance = Math.min(distance, 2.5);
+          const opacity = Math.max(0, 1 - visibleDistance * .36);
+          const scale = Math.max(.72, 1 - visibleDistance * .1);
+          const saturation = Math.max(.7, 1 - visibleDistance * .07);
+          const brightness = Math.max(.62, 1 - visibleDistance * .16);
+          const isActive = index === activeIndex;
+
+          card.classList.toggle('is-active', isActive);
+          card.classList.toggle('is-next', offset > .5 && offset <= 1.5);
+          card.classList.toggle('is-far-next', offset > 1.5);
+          card.classList.toggle('is-prev', offset < -.5 && offset >= -1.5);
+          card.classList.toggle('is-far-prev', offset < -1.5);
+          card.style.setProperty('--card-x', `${offset * spacing}px`);
+          card.style.setProperty('--card-scale', scale.toFixed(3));
+          card.style.setProperty('--card-opacity', opacity.toFixed(3));
+          card.style.setProperty('--card-saturation', saturation.toFixed(3));
+          card.style.setProperty('--card-brightness', brightness.toFixed(3));
+          card.style.zIndex = String(Math.round(100 - distance * 10));
+          card.style.pointerEvents = distance < 2.35 ? 'auto' : 'none';
+          card.tabIndex = isActive ? 0 : -1;
+        });
+      }
+
+      function nearestPositionForIndex(index) {
+        let target = index;
+
+        while (target - position > cards.length / 2) target -= cards.length;
+        while (position - target > cards.length / 2) target += cards.length;
+
+        return target;
+      }
+
+      function selectProject(index) {
+        if (prefersReducedMotion) {
+          position = index;
+          renderCards();
+          return;
+        }
+
+        targetPosition = nearestPositionForIndex(index);
+      }
+
+      function animateCarousel(time) {
+        if (lastTime === undefined) lastTime = time;
+
+        const delta = Math.min((time - lastTime) / 1000, .05);
+        lastTime = time;
+
+        if (targetPosition !== null) {
+          const distance = targetPosition - position;
+
+          if (Math.abs(distance) < .002) {
+            position = targetPosition;
+            targetPosition = null;
+          } else {
+            position += distance * Math.min(1, delta * 4.2);
+          }
+        } else {
+          position += glideSpeed * delta;
+        }
+
+        if (targetPosition === null) {
+          if (position >= cards.length) position -= cards.length;
+          if (position < 0) position += cards.length;
+        }
+
+        renderCards();
+        requestAnimationFrame(animateCarousel);
+      }
+
+      prevButton.addEventListener('click', () => {
+        selectProject(activeIndex - 1);
+      });
+
+      nextButton.addEventListener('click', () => {
+        selectProject(activeIndex + 1);
+      });
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          selectProject(index);
+        });
+      });
+
+      cards.forEach((card, index) => {
+        card.addEventListener('click', (event) => {
+          if (index === activeIndex) return;
+
+          event.preventDefault();
+          selectProject(index);
+        });
+      });
+
+      frame.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          selectProject(activeIndex - 1);
+        }
+
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          selectProject(activeIndex + 1);
+        }
+      });
+
+      renderCards();
+
+      if (!prefersReducedMotion) requestAnimationFrame(animateCarousel);
+    }
+
+    initProjectCarousel();
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeMobileMenu();
